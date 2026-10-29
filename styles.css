@@ -1,0 +1,42 @@
+body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #0a0f1d;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 50%, rgba(0, 115, 230, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+    }
+    .btn-primary {
+      background-color: #0073e6;
+      color: #ffffff;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 4px 14px 0 rgba(0, 115, 230, 0.35);
+    }
+    .btn-primary:hover {
+      background-color: #005bb5;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(0, 115, 230, 0.45);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    .card-shadow {
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -7px rgba(0, 0, 0, 0.05);
+    }
+
+/* Accessibility and interaction polish */
+:focus-visible {
+  outline: 3px solid #0073e6;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TapAsul | Smart NFC Digital Cards &amp; Acrylic QR Stands</title>
+  <meta name="description" content="Discover TapAsul smart NFC digital cards and customized acrylic QR review stands for modern networking and business growth in the Philippines.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#0073e6">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TapAsul">
+  <meta property="og:title" content="TapAsul | Smart NFC Digital Cards & Acrylic QR Stands">
+  <meta property="og:description" content="Connect instantly with smart NFC digital cards and customized acrylic QR review stands.">
+  <meta property="og:image" content="assets/tapasul-social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TapAsul | Smart NFC Digital Cards & Acrylic QR Stands">
+  <meta name="twitter:description" content="Modern NFC digital cards and customized acrylic QR review stands for your business.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Replace this placeholder with your real deployed URL before launch. -->
+  <!-- <link rel="canonical" href="https://your-domain.example/"> -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Three.js for Interactive 3D Product Rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#0073e6',
+              hover: '#005bb5',
+              light: '#e6f2ff',
+              dark: '#003a7a',
+              black: '#0a0f1d'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body class="antialiased text-slate-800 bg-slate-50 flex flex-col min-h-screen">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 bg-brand-light rounded-xl flex items-center justify-center p-2 group-hover:bg-brand/10 transition-colors">
+          <svg viewBox="0 0 100 100" class="w-full h-full text-brand fill-current">
+            <path d="M 50 15 C 30 15 15 30 15 50 C 15 70 30 85 50 85 C 70 85 85 70 85 50 C 85 30 70 15 50 15 Z M 45 35 C 48 35 50 37 50 40 C 50 43 48 45 45 45 C 42 45 40 43 40 40 C 40 37 42 35 45 35 Z M 65 35 C 68 35 70 37 70 40 C 70 43 68 45 65 45 C 62 45 60 43 60 40 C 60 37 62 35 65 35 Z M 35 60 C 40 70 60 70 65 60" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+            <path d="M 70 20 A 15 15 0 0 1 85 35" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 76 14 A 23 23 0 0 1 93 31" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-extrabold text-brand-black tracking-tight font-display">Tap<span class="text-brand">Asul</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+        <a href="#products" class="hover:text-brand transition-colors">Products & Pricing</a>
+        <a href="#customizer" class="hover:text-brand transition-colors">3D Customizer</a>
+        <a href="#faq" class="hover:text-brand transition-colors">FAQ</a>
+        <a href="#team" class="hover:text-brand transition-colors">Team</a>
+      </nav>
+
+      <!-- Pre-Order CTA -->
+      <div class="flex items-center gap-4">
+        <a href="#preorder" class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span>Pre-Order Now</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section id="home" class="relative py-16 md:py-24 hero-glow border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-light text-brand text-xs font-bold uppercase tracking-wider mb-6">
+            <span class="w-2 h-2 rounded-full bg-brand animate-ping"></span>
+            More Than Just A Tap
+          </div>
+          <h1 class="text-4xl md:text-6xl font-extrabold text-brand-black tracking-tight leading-tight mb-6">
+            Connect Instantly with <span class="text-brand">Smart NFC</span> Technology
+          </h1>
+          <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+            Elevate your personal branding and business networking with TapAsul digital cards and customized acrylic review standees. Seamless, fast, and modern.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#preorder" class="btn-primary px-8 py-3.5 rounded-xl font-semibold text-center flex items-center justify-center gap-2 text-base">
+              <span>Order Your TapAsul</span>
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+            <a href="#customizer" class="px-8 py-3.5 rounded-xl font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 text-center transition-colors">
+              Try 3D Studio
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero 3D Card Preview -->
+        <div class="relative bg-white p-6 rounded-3xl card-shadow border border-slate-200 flex flex-col items-center justify-center min-h-[380px]">
+          <div id="hero3dCanvas" class="w-full h-80 rounded-2xl overflow-hidden cursor-grab"></div>
+          <p class="text-xs text-slate-400 mt-3 flex items-center gap-1.5">
+            <i data-lucide="move-3d" class="w-4 h-4 text-brand"></i>
+            <span>Interactive 3D Preview • Drag to rotate product model</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products & Pricing Section -->
+    <section id="products" class="py-20 bg-white border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-3xl md:text-4xl font-extrabold text-brand-black mb-4">Our Hardware Products</h2>
+          <p class="text-slate-600 text-lg">Choose the perfect smart solution for your personal brand or retail storefront.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Digital Card -->
+          <div class="bg-slate-50 border-2 border-brand/20 hover:border-brand rounded-3xl p-8 card-shadow transition-all relative flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 bg-brand-light rounded-2xl flex items-center justify-center text-brand mb-6">
+                <i data-lucide="credit-card" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-brand-black mb-2">Standard Digital Card</h3>
+              <p class="text-slate-600 mb-6 text-sm">Personal NFC PVC card configured with your custom profile, socials, and contact card download.</p>
+              
+              <div class="mb-6 pb-6 border-b border-slate-200">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-4xl font-extrabold text-brand-black">₱999</span>
+                  <span class="text-slate-500 font-medium">one-time hardware fee</span>
+                </div>
+                <div class="mt-2 text-sm text-brand font-semibold flex items-center gap-1.5">
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                  <span>₱149 / month hosting requirement</span>
+                </div>
+              </div>
+
+              <ul class="space-y-3 mb-8 text-sm text-slate-600">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Durable Matte-Finish NFC PVC Card</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Dynamic Contact Save (vCard)</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Real-time Profile Edits</li>
+              </ul>
+            </div>
+
+            <a href="#preorder" onclick="selectProduct('card')" class="w-full btn-primary py-3 rounded-xl text-center font-semibold text-sm">
+              Select Digital Card
+            </a>
+          </div>
+
+          <!-- Acrylic Standee -->
+          <div class="bg-slate-50 border-2 border-slate-200 hover:border-brand rounded-3xl p-8 card-shadow transition-all relative flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 bg-brand-light rounded-2xl flex items-center justify-center text-brand mb-6">
+                <i data-lucide="qr-code" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-brand-black mb-2">Customized Acrylic Standee</h3>
+              <p class="text-slate-600 mb-6 text-sm">High-grade acrylic display stand equipped with NFC chip and engraved QR code for storefronts.</p>
+              
+              <div class="mb-6 pb-6 border-b border-slate-200">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-4xl font-extrabold text-brand-black">₱899</span>
+                  <span class="text-slate-500 font-medium">one-time payment</span>
+                </div>
+                <div class="mt-2 text-sm text-emerald-600 font-semibold flex items-center gap-1.5">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
+                  <span>No monthly subscription</span>
+                </div>
+              </div>
+
+              <ul class="space-y-3 mb-8 text-sm text-slate-600">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Premium Acrylic Display + Wood/Acrylic Base</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Instant Google Review & Social Redirects</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand"></i> Waterproof & Scratch-Resistant Print</li>
+              </ul>
+            </div>
+
+            <a href="#preorder" onclick="selectProduct('acrylic')" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl text-center font-semibold text-sm transition-colors">
+              Select Acrylic Standee
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D Customizer Studio -->
+    <section id="customizer" class="py-20 bg-slate-900 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="text-brand text-xs font-bold uppercase tracking-wider">Live Preview</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold mb-4 font-display">3D Customizer Studio</h2>
+          <p class="text-slate-400">Personalize your TapAsul hardware in real-time before placing your pre-order.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8 items-center">
+          <!-- Controls -->
+          <div class="bg-slate-800/80 p-6 rounded-3xl border border-slate-700 space-y-6">
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-400 mb-2">Select Model Type</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button id="btnModelCard" onclick="switch3DModel('card')" class="px-4 py-2.5 rounded-xl font-medium text-sm bg-brand text-white border border-brand transition-all">
+                  Digital Card
+                </button>
+                <button id="btnModelStand" onclick="switch3DModel('stand')" class="px-4 py-2.5 rounded-xl font-medium text-sm bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600 transition-all">
+                  Acrylic Standee
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-400 mb-2">Custom Name / Title</label>
+              <input type="text" id="customNameInput" value="TAPASUL HARDWARE" oninput="update3DText()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand" placeholder="Enter your business name">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-400 mb-2">Color Theme</label>
+              <div class="flex gap-3">
+                <button onclick="set3DColor('#0073e6')" class="w-8 h-8 rounded-full bg-[#0073e6] ring-2 ring-white/20 hover:scale-110 transition-transform"></button>
+                <button onclick="set3DColor('#0a0f1d')" class="w-8 h-8 rounded-full bg-[#0a0f1d] ring-2 ring-white/20 hover:scale-110 transition-transform"></button>
+                <button onclick="set3DColor('#059669')" class="w-8 h-8 rounded-full bg-[#059669] ring-2 ring-white/20 hover:scale-110 transition-transform"></button>
+                <button onclick="set3DColor('#d97706')" class="w-8 h-8 rounded-full bg-[#d97706] ring-2 ring-white/20 hover:scale-110 transition-transform"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live 3D Interactive Viewport -->
+          <div class="lg:col-span-2 bg-slate-950/60 rounded-3xl border border-slate-800 p-4 h-[420px] relative overflow-hidden flex items-center justify-center">
+            <div id="studio3dCanvas" class="w-full h-full rounded-2xl cursor-grab"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-white border-b border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-brand-black mb-3">Frequently Asked Questions</h2>
+          <p class="text-slate-600">Everything you need to know about TapAsul technology and ordering.</p>
+        </div>
+
+        <div class="space-y-4">
+          <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex items-center justify-between cursor-pointer font-semibold text-brand-black">
+              <span>How does the TapAsul Digital Card work?</span>
+              <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </summary>
+            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+              TapAsul uses embedded NFC (Near Field Communication) chips. When tapped against any modern iOS or Android smartphone, it instantly opens your custom dynamic landing page—allowing clients to save your contact info or view links without installing any app.
+            </p>
+          </details>
+
+          <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex items-center justify-between cursor-pointer font-semibold text-brand-black">
+              <span>What is the ₱149 monthly hosting fee for?</span>
+              <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </summary>
+            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+              The ₱149 monthly subscription maintains your dynamic web page server, analytics tracking, contact vCard download links, and allows you to request real-time updates to your contact details anytime.
+            </p>
+          </details>
+
+          <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex items-center justify-between cursor-pointer font-semibold text-brand-black">
+              <span>How do customers leave a review on the Acrylic Standee?</span>
+              <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </summary>
+            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+              Customers simply tap their smartphone against the top of the acrylic standee (or scan the high-clarity QR code). It instantly redirects them directly to your Google Business Review form or social media page.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership Team Section -->
+    <section id="team" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl font-extrabold text-brand-black mb-3">Meet the Leadership</h2>
+          <p class="text-slate-600">The team driving contactless technology and modern digital solutions.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+          <!-- Founder -->
+          <div class="bg-white p-8 rounded-3xl border border-slate-200 card-shadow text-center">
+            <div class="w-20 h-20 bg-brand-light rounded-full flex items-center justify-center text-brand font-extrabold text-2xl mx-auto mb-4 border-2 border-brand">
+              JD
+            </div>
+            <h3 class="text-xl font-bold text-brand-black">Justin Diaz</h3>
+            <p class="text-brand text-sm font-semibold mb-3">Founder & Lead Software Developer</p>
+            <p class="text-slate-600 text-sm">Spearheading system architecture, custom NFC web integrations, and product development.</p>
+          </div>
+
+          <!-- Co-Founder -->
+          <div class="bg-white p-8 rounded-3xl border border-slate-200 card-shadow text-center">
+            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-slate-700 font-extrabold text-2xl mx-auto mb-4 border-2 border-slate-300">
+              CF
+            </div>
+            <h3 class="text-xl font-bold text-brand-black">Co-Founder</h3>
+            <p class="text-slate-500 text-sm font-semibold mb-3">Co-Founder & Operations Lead</p>
+            <p class="text-slate-600 text-sm">Managing client onboarding, hardware customization, and business growth strategies.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pre-Order Section -->
+    <section id="preorder" class="py-20 bg-white">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 card-shadow">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-brand-black mb-2">Pre-Order TapAsul Hardware</h2>
+            <p class="text-slate-600 text-sm">Choose your product and quantity to prepare your pre-order details.</p>
+          </div>
+
+          <form id="preOrderForm" onsubmit="handlePreOrderSubmit(event)" class="space-y-6">
+            <!-- Strict Choice Selection -->
+            <div class="space-y-3">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Select Product Choice</label>
+              
+              <!-- Choice 1 -->
+              <label class="flex items-center justify-between p-4 bg-white border-2 border-brand rounded-2xl cursor-pointer hover:bg-brand-light/30 transition-colors">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="productChoice" value="card" checked onchange="calculateTotal()" class="w-5 h-5 text-brand focus:ring-brand">
+                  <div>
+                    <div class="font-bold text-brand-black">Standard Digital Card</div>
+                    <div class="text-xs text-slate-500">₱999 Hardware + ₱149/mo hosting</div>
+                  </div>
+                </div>
+                <span class="font-extrabold text-brand">₱999</span>
+              </label>
+
+              <!-- Choice 2 -->
+              <label class="flex items-center justify-between p-4 bg-white border-2 border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100 transition-colors">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="productChoice" value="acrylic" onchange="calculateTotal()" class="w-5 h-5 text-brand focus:ring-brand">
+                  <div>
+                    <div class="font-bold text-brand-black">Customized Acrylic Standee</div>
+                    <div class="text-xs text-slate-500">₱899 One-time payment</div>
+                  </div>
+                </div>
+                <span class="font-extrabold text-slate-800">₱899</span>
+              </label>
+            </div>
+
+            <!-- Quantity -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Quantity</label>
+              <div class="flex items-center gap-3">
+                <button type="button" onclick="adjustQty(-1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">-</button>
+                <input type="number" id="orderQty" value="1" min="1" readonly class="w-16 text-center font-bold text-brand-black bg-transparent text-lg">
+                <button type="button" onclick="adjustQty(1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center">+</button>
+              </div>
+            </div>
+
+            <!-- Customer Details -->
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
+                <input type="text" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand" placeholder="e.g. Juan Dela Cruz">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Email Address</label>
+                <input type="email" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand" placeholder="juan@example.com">
+              </div>
+            </div>
+
+            <!-- Dynamic Total Display -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="text-xs text-slate-500 block">Total Due</span>
+                <span id="displayTotal" class="text-2xl font-extrabold text-brand">₱999</span>
+              </div>
+              <span id="displayHosting" class="text-xs text-brand font-semibold bg-brand-light px-3 py-1 rounded-full">+ ₱149/mo hosting</span>
+            </div>
+
+            <button type="submit" class="w-full btn-primary py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>Confirm Pre-Order</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-white py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <span class="text-xl font-extrabold font-display">Tap<span class="text-brand">Asul</span></span>
+        <span class="text-slate-500 text-sm">| More Than Just A Tap</span>
+      </div>
+      <p class="text-slate-500 text-sm">© 2026 TapAsul. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+
+</body>
+</html>
