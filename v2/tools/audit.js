@@ -86,6 +86,38 @@ function ok(name, pass, note) { results.push([pass ? 'PASS' : 'FAIL', name, note
   ok('booking date starts at the lead time', !!bk.dateMin, bk.dateMin);
   ok('promo code box present + CTA shows the total', bk.promo && /\u20b1/.test(bk.cta), bk.cta);
 
+  const inside = await p.evaluate(() => {
+    const cards = [...document.querySelectorAll('.inside-card')];
+    const txt = (el) => (el || {}).textContent ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+    const std = cards.find((c) => c.dataset.insideProduct === 'card');
+    const prm = cards.find((c) => c.dataset.insideProduct === 'premium');
+    const items = (c) => [...(c ? c.querySelectorAll('.inside-card__list strong') : [])].map((e) => e.textContent.trim());
+    return {
+      section: !!document.querySelector('#inside'),
+      cards: cards.length,
+      names: cards.map((c) => txt(c.querySelector('.inside-card__head h3'))),
+      prices: cards.map((c) => txt(c.querySelector('.inside-card__price'))),
+      stdItems: items(std),
+      prmItems: items(prm),
+      tiles: [...document.querySelectorAll('.inside__tile strong')].map((e) => e.textContent.trim()),
+      ctas: [...document.querySelectorAll('.inside-card__cta')].map((e) => e.textContent.trim()),
+      title: txt(document.querySelector('#inside h2')),
+    };
+  });
+  ok('inside-the-card section renders 2 tier cards', inside.section && inside.cards === 2, JSON.stringify(inside.names));
+  ok('section is titled "What is inside your digital card"', /inside your digital card/i.test(inside.title || ''), inside.title);
+  ok('standard tier lists picture/tagline/bio/3 socials/contact + 2 features of choice',
+     ['Profile picture', 'Tagline', 'Bio', '3 social media links', 'Contact info'].every((t) => inside.stdItems.includes(t)) &&
+     inside.stdItems.includes('2 features of your choice'),
+     inside.stdItems.join(' | '));
+  ok('premium tier lists picture/all socials/tagline/all contacts/all features',
+     ['Profile picture', 'All of your social media', 'Tagline', 'All contacts', 'All of the features'].every((t) => inside.prmItems.includes(t)),
+     inside.prmItems.join(' | '));
+  ok('featured list: reviews, portfolio, OTP, appointment, carousel, URLs, payment',
+     ['Client Reviews', 'Portfolio', 'OTP Before Entering', 'Book Appointment', '1 slide of 5-picture carousel', 'Payment method'].every((t) => inside.tiles.includes(t)) && inside.tiles.length >= 7,
+     inside.tiles.join(' | '));
+  ok('tier prices show live values', /999/.test(inside.prices[0] || '') && /2,499/.test(inside.prices[1] || ''), inside.prices.join(' / '));
+
   const noPre = await p.evaluate(() => {
     const t = document.body.innerText.toLowerCase();
     return { page: /pre-order|pre order/.test(t) };
@@ -250,6 +282,74 @@ function ok(name, pass, note) { results.push([pass ? 'PASS' : 'FAIL', name, note
   ok('the booking stores date + slot + phone', !!good.record.date && !!good.record.slot && !!good.record.phone,
      JSON.stringify({ date: good.record.date, slot: good.record.slot, phone: good.record.phone }));
   await pb.close();
+
+  /* ---------- 4c. inside-the-card CTA picks the tier ---------- */
+  await p.evaluate(() => document.querySelector('#inside').scrollIntoView({ block: 'start' }));
+  await p.waitForTimeout(500);
+  await p.click('[data-inside-pick="premium"]');
+  await p.waitForTimeout(700);
+  const picked = await p.evaluate(() => ({
+    type: document.querySelector('.btype.is-active') ? document.querySelector('.btype.is-active').dataset.type : '',
+    total: document.getElementById('displayTotal').textContent,
+    rows: document.getElementById('summaryRows').textContent.replace(/\s+/g, ' '),
+    model: [...document.querySelectorAll('#modelToggle button')].map((b) => b.dataset.model + '=' + b.getAttribute('aria-pressed')).join(','),
+  }));
+  ok('"Book the premium card" selects the premium tier',
+     picked.type === 'premium' && /premium=true/.test(picked.model) && /2,499/.test(picked.rows),
+     picked.type + ' / ' + picked.model + ' / ' + picked.rows.slice(0, 60));
+
+  /* ---------- 4d. "choose your 2 features" picker ---------- */
+  // make sure we are on the Standard card first — the picker only shows there
+  await p.evaluate(() => {
+    const b = document.querySelector('.btype[data-type="standard"]');
+    if (b) b.click();
+  });
+  await p.waitForTimeout(500);
+  const picker = await p.evaluate(() => {
+    const chips = [...document.querySelectorAll('#featurePickList .chip')];
+    return {
+      visible: !document.querySelector('#featurePickBlock').hidden,
+      count: chips.length,
+      labels: chips.map((c) => c.textContent.trim()),
+    };
+  });
+  ok('booking form shows the "choose your features" picker', picker.visible && picker.count >= 7, picker.count + ' chips');
+  ok('picker offers every featured feature',
+     picker.labels.length >= 7 && picker.labels.includes('Client Reviews') && picker.labels.includes('Payment method'),
+     picker.labels.join(' | '));
+
+  const totalBefore = await p.evaluate(() => document.getElementById('displayTotal').textContent);
+  await p.evaluate(() => { document.querySelector('#featurePickList .chip').click(); });
+  await p.waitForTimeout(250);
+  await p.evaluate(() => { document.querySelectorAll('#featurePickList .chip')[1].click(); });
+  await p.waitForTimeout(250);
+  const two = await p.evaluate(() => ({
+    on: document.querySelectorAll('#featurePickList .chip.is-on').length,
+    summary: document.getElementById('summaryRows').textContent.replace(/\s+/g, ' '),
+    total: document.getElementById('displayTotal').textContent,
+  }));
+  ok('customer can pick exactly 2 features', two.on === 2, JSON.stringify(two));
+  ok('the picked features show in the summary without changing the price',
+     /Features/.test(two.summary) && /Client Reviews/.test(two.summary) && two.total === totalBefore,
+     two.summary.slice(0, 90) + ' | total ' + two.total + ' (was ' + totalBefore + ')');
+
+  await p.evaluate(() => { document.querySelectorAll('#featurePickList .chip')[2].click(); });
+  await p.waitForTimeout(250);
+  const three = await p.evaluate(() => ({
+    on: document.querySelectorAll('#featurePickList .chip.is-on').length,
+    err: (document.querySelector('#featurePickError') || {}).textContent || '',
+  }));
+  ok('a third feature is refused (only 2 allowed)', three.on === 2 && /2 features/.test(three.err), JSON.stringify(three));
+
+  await p.evaluate(() => { document.querySelector('.btype[data-type="premium"]').click(); });
+  await p.waitForTimeout(500);
+  const prmPick = await p.evaluate(() => ({
+    chips: document.querySelectorAll('#featurePickList .chip').length,
+    hint: (document.querySelector('#featurePickHint') || {}).textContent || '',
+  }));
+  ok('premium booking has no picker (every feature included)', prmPick.chips === 0 && /every feature/i.test(prmPick.hint), JSON.stringify(prmPick));
+  await p.evaluate(() => { document.querySelector('.btype[data-type="standard"]').click(); });
+  await p.waitForTimeout(400);
 
   /* ---------- 5. studio customisation ---------- */
   await p.evaluate(() => document.getElementById('customizer').scrollIntoView());

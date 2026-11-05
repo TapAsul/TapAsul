@@ -126,6 +126,19 @@ window.TAPASUL_CONFIG = {
     // Put a deposit on the booking. 0 = the customer pays the full amount.
     depositPercent: 0,                 // ← CHANGE ME e.g. 30 to take a 30% deposit
 
+    // ── "Choose your 2 features" picker ──────────────────────────────
+    // Only shown for the booking types listed in `appliesTo` (the
+    // Standard card). The options come from inside.featured above.
+    // Set `enabled: false` to hide the picker completely.
+    featurePick: {
+      enabled: true,
+      max: 2,                         // how many the customer may pick
+      label: "Your 2 features",
+      note: "Your Standard card includes any 2 features. Pick yours below.",
+      premiumNote: "Premium includes every feature — nothing to pick.",
+      appliesTo: ["standard", "custom"],
+    },
+
     // Where the customer comes.
     location: {
       label: "Quezon City, Metro Manila",
@@ -138,6 +151,66 @@ window.TAPASUL_CONFIG = {
     confirmationNote: "We email you within 24 hours to confirm your slot and the exact amount.",
     rescheduleNote: "Need another day? Email us at least 24 hours before and we will move your booking free of charge.",
     cancelledNote: "Cancel free of charge up to 24 hours before your appointment.",
+  },
+
+  /* -------------------------------------------------------------------------
+     1c. INSIDE THE CARD
+     What a tap actually opens. Two columns — one per card tier — and the
+     list of extras that only the Premium profile page unlocks.
+     {card} {premium} {hosting} {premiumHosting} are replaced with live
+     prices, so this never goes out of date.
+     ------------------------------------------------------------------------- */
+  inside: {
+    columns: [
+      {
+        id: "standard",
+        product: "card",
+        name: "Standard Digital Card",
+        priceLabel: "{card} once + {hosting}/month",
+        note: "Everything you need to get the contact — plus two features you pick yourself.",
+        cta: "Book the standard card",
+        items: [
+          { title: "Profile picture",      text: "One photo at the top of your profile" },
+          { title: "Tagline",              text: "One line that sits under your name" },
+          { title: "Bio",                  text: "A short paragraph about you or your business" },
+          { title: "3 social media links", text: "Pick the three that matter" },
+          { title: "Contact info",         text: "Your email and your contact number" },
+          { title: "2 features of your choice", text: "Choose any two from the Featured list below", highlight: true },
+        ],
+      },
+      {
+        id: "premium",
+        product: "premium",
+        name: "Premium Digital Card",
+        priceLabel: "{premium} once + {premiumHosting}/month",
+        note: "Everything in the standard card, plus every feature below — nothing held back.",
+        cta: "Book the premium card",
+        featured: true,
+        items: [
+          { title: "Profile picture",         text: "Your photo, in full colour" },
+          { title: "All of your social media", text: "Every link you want, not just three" },
+          { title: "Tagline",                 text: "Your headline, right under your name" },
+          { title: "All contacts",            text: "Email, mobile, WhatsApp and address" },
+          { title: "All of the features",     text: "Every feature in the Featured list below", highlight: true },
+        ],
+      },
+    ],
+
+    // The catalogue of optional features. The "choose 2" picker in the
+    // booking form reads this same list, so there is only ever ONE list
+    // to edit. Remove a line here and it disappears from both places.
+    featuredTitle: "The Featured features",
+    featuredSub: "Standard card — choose any 2 of these. Premium card — every single one is included.",
+    featured: [
+      { icon: "star",      title: "Client Reviews",                text: "Let people rate you and read what they said." },
+      { icon: "briefcase", title: "Portfolio",                     text: "Show the work you are proud of." },
+      { icon: "images",    title: "Portfolio gallery",             text: "A visual grid of your best work." },
+      { icon: "lock",      title: "OTP Before Entering",           text: "Visitors enter a one-time code before the page opens." },
+      { icon: "calendar",  title: "Book Appointment",              text: "Let people book a slot straight from your card." },
+      { icon: "images",    title: "1 slide of 5-picture carousel", text: "One slide of five photos that swipes." },
+      { icon: "globe",     title: "URL — website, store and etc.",  text: "Any link you want them to open." },
+      { icon: "wallet",    title: "Payment method",                text: "A GCash, Maya or bank-transfer button on the page." },
+    ],
   },
 
   // Promo codes for the booking summary. Percent or a fixed peso amount.
@@ -195,7 +268,7 @@ window.TAPASUL_CONFIG = {
         monthly: 299,               // recurring hosting fee
         monthlyLabel: "/ month hosting requirement",
         priceNote: "one-time hardware fee",
-        blurb: "Keep the TapAsul standard card design and add your own logo in the centre, or book a consultation for a completely different physical card design.",
+        blurb: "Your own logo, colours and design — customisation is included, plus priority booking and unlimited artwork revisions.",
         features: [
           "Your Own Logo & Colours Included",
           "Premium NFC PVC Card",
@@ -305,7 +378,7 @@ window.TAPASUL_CONFIG = {
       default: "standard",
       options: [
         { id: "standard", label: "TapAsul artwork", note: "We print the card for you." },
-        { id: "custom",   label: "Add my own logo", note: "Keep the standard TapAsul design and place your logo in the centre." },
+        { id: "custom",   label: "Your own branding", note: "Upload your logo and pick your colours." },
       ],
     },
 
@@ -457,6 +530,7 @@ window.TAPASUL_CONFIG = {
       customizer: "3D Customizer",
       faq: "FAQ",
       team: "Team",
+      inside: "Inside the card",
       order: "Book Now",
     },
 
@@ -474,6 +548,8 @@ window.TAPASUL_CONFIG = {
     // ── Section headings ────────────────────────────────────────────────
     sections: {
       products:   { title: "Our digital card",  sub: "Two tiers, the same tap — the standard TapAsul card, or the Premium card with your own logo, colours and priority booking." },
+      inside:     { eyebrow: "Inside the card", title: "What's inside your digital card?",
+                    sub: "The Standard card gives you the essentials plus two features you choose. The Premium card gives you all of it — every social link, every contact and every feature below." },
       customizer: { eyebrow: "Live preview", title: "3D customizer studio", sub: "Personalise your card in real time, then book your appointment." },
       faq:        { title: "Frequently asked questions", sub: "Everything you need to know about TapAsul technology and booking." },
       team:       { title: "Meet the leadership", sub: "The team driving contactless technology and modern digital solutions." },

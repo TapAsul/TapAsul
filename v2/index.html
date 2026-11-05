@@ -375,6 +375,25 @@
       </div>
     </section>
 
+    <!-- ================= INSIDE THE CARD ================= -->
+    <section class="section section--alt" id="inside">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-text="content.sections.inside.eyebrow">Inside the card</span>
+          <h2 data-text="content.sections.inside.title">What a tap actually opens</h2>
+          <p data-text="content.sections.inside.sub">Your card is only the doorway. This is what sits behind it.</p>
+        </div>
+
+        <div class="inside__compare" id="insideCompare">
+          <!-- rendered from site.config.js -> inside.columns -->
+        </div>
+
+        <div class="inside__featured" id="insideFeatured">
+          <!-- rendered from site.config.js -> inside.featured -->
+        </div>
+      </div>
+    </section>
+
     <!-- ================= 3D CUSTOMIZER ================= -->
     <section class="section section--dark" id="customizer">
       <div class="container">
@@ -409,12 +428,13 @@
                 <span id="logoFileName" data-text="content.labels.chooseFile">Choose an image</span>
                 <input type="file" id="logoUpload" accept="image/*" hidden>
               </label>
-              <p class="panel__hint" id="logoHint">We'll keep the standard TapAsul card design and place your logo neatly in the centre. PNG with a transparent background works best.</p>
-              <div class="customizer-note" role="note">
-                <strong>Prefer a different physical card design?</strong>
-                <span>No problem. Book a design consultation and we'll discuss your ideas with you before production.</span>
-                <a class="btn btn--glass btn--sm customizer-consult" href="#preorder" id="designConsultation">Book a design consultation</a>
-              </div>
+              <p class="panel__hint" id="logoHint" data-text="content.labels.logoHint">PNG or JPG with a transparent background works best.</p>
+
+              <span class="field-label" data-text="content.labels.background">Background colour</span>
+              <div class="swatches" id="colourSwatches" role="group"></div>
+
+              <span class="field-label" data-text="content.labels.gradient">Gradient</span>
+              <div class="swatches" id="gradientSwatches" role="group"></div>
             </div>
 
             <div>
@@ -555,6 +575,16 @@
               <div class="choice-list" id="addOnsList">
                 <!-- generated from site.config.js -->
               </div>
+            </fieldset>
+
+            <!-- the "choose your 2 features" picker (Standard card) -->
+            <fieldset class="booking__features" id="featurePickBlock" hidden>
+              <legend class="field-label" id="featurePickLabel">Your 2 features</legend>
+              <p class="field__hint" id="featurePickHint"></p>
+              <div class="feature-chips" id="featurePickList">
+                <!-- generated from site.config.js -> inside.featured -->
+              </div>
+              <p class="field__error" id="featurePickError" role="alert"></p>
             </fieldset>
 
             <div class="booking__where">
@@ -758,6 +788,7 @@
           <h4 data-text="content.footer.exploreTitle">Explore</h4>
           <ul>
             <li><a href="#products" data-text="content.nav.products">Products &amp; Pricing</a></li>
+            <li><a href="#inside" data-text="content.nav.inside">Inside the card</a></li>
             <li><a href="#customizer" data-text="content.nav.customizer">3D Customizer</a></li>
             <li><a href="#faq" data-text="content.nav.faq">FAQ</a></li>
             <li><a href="#preorder" data-text="content.nav.order">Pre-Order</a></li>

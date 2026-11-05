@@ -115,6 +115,9 @@
       branding: o.branding || '',
       finish: o.finish || '',
       addOns: Array.isArray(o.addOns) ? o.addOns : [],
+      features: Array.isArray(o.features)
+        ? o.features
+        : (typeof o.features === 'string' ? o.features.split(',').map(function (f) { return f.trim(); }).filter(Boolean) : []),
       total: Number(o.total || 0),
       currency: o.currency || 'PHP',
       status: o.status || 'new',
@@ -367,7 +370,12 @@
       tr.appendChild(el('td', {}, [
         o.email ? el('a', { href: 'mailto:' + o.email, text: o.email }) : el('span', { text: '—' })
       ]));
-      tr.appendChild(el('td', { text: o.product || '—' }));
+      tr.appendChild(el('td', {}, [
+        el('div', { text: o.product || '—' }),
+        (o.features && o.features.length)
+          ? el('div', { style: 'font-size:.72rem;color:var(--brand);font-weight:600', text: o.features.join(' · ') })
+          : null
+      ].filter(Boolean)));
       tr.appendChild(el('td', { class: 'num', text: String(o.quantity) }));
       tr.appendChild(el('td', { class: 'num', style: 'font-weight:700', text: money(o.total) }));
       tr.appendChild(el('td', { class: 'num', text: o.monthlyHosting ? money(o.monthlyHosting) : '—' }));
@@ -479,6 +487,7 @@
       ['Phone', o.phone || '—'],
       ['Appointment', o.date ? (o.date + (o.slot ? ' at ' + o.slot : '')) : '—'],
       ['Card', o.product],
+      ['Features on the card', o.features && o.features.length ? o.features.join(', ') : '—'],
       ['Quantity', String(o.quantity)],
       ['Unit price', money(o.unitPrice)],
       ['Discount', o.discount ? '-' + money(o.discount) : '—'],

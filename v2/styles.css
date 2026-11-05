@@ -1501,22 +1501,140 @@ img, svg, video, canvas, table { max-width: 100%; }
   width: 6px; height: 6px; border-radius: 50%; background: var(--brand);
 }
 
-/* Clear Premium logo and design-consultation guidance in the 3D studio */
-.customizer-note {
-  display: grid;
-  gap: 7px;
-  margin-top: 14px;
-  padding: 14px;
-  border: 1px solid rgba(96,165,250,.28);
-  border-radius: 13px;
-  background: rgba(8,129,239,.08);
-  color: #cbd5e1;
-  font-size: .78rem;
-  line-height: 1.55;
+/* ==========================================================================
+   INSIDE THE CARD — what a tap opens, per tier
+   ========================================================================== */
+.inside__compare {
+  display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr);
+  margin-top: 8px;
 }
-.customizer-note strong { color: #fff; font-size: .84rem; }
-.customizer-note .customizer-consult {
-  justify-self: start;
-  margin-top: 4px;
-  text-decoration: none;
+@media (min-width: 860px) { .inside__compare { grid-template-columns: 1fr 1fr; } }
+
+.inside-card {
+  display: flex; flex-direction: column; gap: 20px;
+  padding: 28px; border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
 }
+.inside-card--featured {
+  border-color: rgba(8, 129, 239, .38);
+  box-shadow: 0 18px 40px -22px rgba(8, 129, 239, .45);
+}
+.inside-card__head h3 { font-size: 1.3125rem; margin-bottom: 8px; }
+.inside-card__price {
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  background: var(--brand-light); color: var(--brand-dark);
+  font-size: .8125rem; font-weight: 800;
+}
+.inside-card__note { margin: 12px 0 0; font-size: .9375rem; color: var(--text-muted); }
+
+.inside-card__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.inside-card__list li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
+.inside-card__tick {
+  width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--brand-light); color: var(--brand); flex: none;
+}
+.inside-card__tick svg { width: 15px; height: 15px; }
+.inside-card__text { display: grid; gap: 2px; }
+.inside-card__text strong { font-size: .9375rem; color: var(--ink); font-weight: 700; }
+.inside-card__text span { font-size: .875rem; color: var(--text-muted); }
+
+/* ---------- the premium extras band ---------- */
+.inside__featured {
+  margin-top: 24px; padding: 28px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(140deg, #0f172a 0%, #14304f 100%);
+  color: #e2e8f0;
+  box-shadow: 0 24px 50px -26px rgba(15, 23, 42, .7);
+}
+.inside__featured-head h3 { color: #fff; font-size: 1.3125rem; margin-bottom: 6px; }
+.inside__featured-head p { color: #94a3b8; font-size: .9375rem; margin: 0 0 20px; max-width: 56ch; }
+
+.inside__featured-grid { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .inside__featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1080px) { .inside__featured-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.inside__tile {
+  display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;
+  padding: 16px; border-radius: 16px;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+.inside__tile-icon {
+  width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+  background: rgba(8, 129, 239, .22); color: #7cc0ff;
+}
+.inside__tile-icon svg { width: 20px; height: 20px; }
+.inside__tile strong { display: block; color: #fff; font-size: .9375rem; margin-bottom: 3px; }
+.inside__tile span { display: block; color: #94a3b8; font-size: .8125rem; line-height: 1.55; }
+
+/* the call-to-action under each comparison card */
+.inside-card__cta { margin-top: auto; }
+.inside__featured-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+@media (min-width: 700px) { .inside__featured-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } }
+@media (min-width: 1080px) { .inside__featured-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } }
+
+/* ==========================================================================
+   INSIDE THE CARD — clarifications
+   ========================================================================== */
+
+/* the "2 features of your choice" / "All of the features" line */
+.inside-card__list li.is-highlight .inside-card__tick { background: var(--brand); color: #fff; }
+.inside-card__list li.is-highlight strong { color: var(--brand-dark); }
+.inside-card__list li.is-highlight .inside-card__text > span { color: var(--text); font-weight: 600; }
+
+/* the two rules — Standard picks 2, Premium takes them all */
+.inside__featured-rules {
+  display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr);
+  margin-bottom: 20px;
+}
+@media (min-width: 700px) { .inside__featured-rules { grid-template-columns: 1fr 1fr; } }
+.inside__rule {
+  display: grid; grid-template-columns: 12px 1fr; gap: 12px; align-items: start;
+  padding: 13px 16px; border-radius: 14px;
+  background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .13);
+}
+.inside__rule b { display: block; color: #fff; font-size: .875rem; margin-bottom: 1px; }
+.inside__rule span { color: #9fb0c6; font-size: .8125rem; }
+.inside__rule-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; }
+.inside__rule-dot--std { background: #cbd5e1; }
+.inside__rule-dot--prm { background: var(--brand); box-shadow: 0 0 0 4px rgba(8, 129, 239, .22); }
+
+/* which tier gets which feature */
+.inside__tile-body { min-width: 0; }
+.inside__pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+.inside__pill {
+  font-size: .6875rem; font-weight: 700; letter-spacing: .01em;
+  padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+}
+.inside__pill--std { background: rgba(255, 255, 255, .14); color: #cbd5e1; }
+.inside__pill--prm { background: rgba(8, 129, 239, .30); color: #a8d4ff; }
+
+/* ==========================================================================
+   BOOKING — "choose your 2 features" picker
+   ========================================================================== */
+.booking__features { border: 0; padding: 0; margin: 0; min-width: 0; }
+.booking__features .field__hint { margin: 2px 0 12px; }
+.booking__features .field__error { margin-top: 8px; }
+
+.feature-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px; border-radius: 999px;
+  border: 1.5px solid var(--line-strong); background: var(--surface);
+  color: var(--ink); font-family: inherit; font-size: .8125rem; font-weight: 700;
+  cursor: pointer; text-align: left;
+  transition: border-color .16s var(--ease), background-color .16s var(--ease),
+              color .16s var(--ease), box-shadow .16s var(--ease);
+}
+.chip:hover { border-color: var(--brand); color: var(--brand-dark); }
+.chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.chip__icon { display: grid; place-items: center; flex: none; }
+.chip__icon svg { width: 14px; height: 14px; }
+.chip__label { overflow-wrap: anywhere; }
+.chip.is-on {
+  background: var(--brand); border-color: var(--brand); color: #fff;
+  box-shadow: 0 10px 22px -12px rgba(8, 129, 239, .8);
+}
+.chip.is-on .chip__icon { color: #fff; }

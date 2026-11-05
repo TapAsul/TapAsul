@@ -202,6 +202,80 @@ content: {
 - `**double stars**` become bold.
 - `{email}` and `{brand}` are replaced with your real values.
 
+### 4b. The “Inside the card” section
+
+The comparison block under **Products & Pricing** is driven by one top-level
+`inside` block. Add, remove or reword a line and the page updates — no HTML edits.
+
+```js
+inside: {
+  columns: [
+    {
+      product: "card",                     // which tier this column describes
+      name: "Standard Digital Card",
+      priceLabel: "{card} once + {hosting}/month",   // live prices
+      note: "Everything you need to get the contact — plus two features you pick.",
+      cta: "Book the standard card",       // button label (click → picks that tier)
+      items: [
+        { title: "Profile picture", text: "One photo at the top of your profile" },
+        { title: "Tagline", text: "One line that sits under your name" },
+        { title: "Bio", text: "A short paragraph about you" },
+        { title: "3 social media links", text: "Pick the three that matter" },
+        { title: "Contact info", text: "Your email and your contact number" },
+        { title: "2 features of your choice", text: "Choose any two from the list below",
+          highlight: true },              // highlight: true = the blue "star" line
+      ],
+    },
+    {
+      product: "premium", featured: true, name: "Premium Digital Card",
+      items: [ … { title: "All of the features", text: "…", highlight: true } ],
+    },
+  ],
+
+  featuredTitle: "The Featured features",
+  featuredSub:   "Standard card — choose any 2. Premium card — every one is included.",
+  featured: [                            // the catalogue of optional features
+    { icon: "star", title: "Client Reviews", text: "Let people rate you …" },
+    { icon: "briefcase", title: "Portfolio", text: "…" },
+    { icon: "images", title: "Portfolio gallery", text: "…" },
+    { icon: "lock", title: "OTP Before Entering", text: "…" },
+    { icon: "calendar", title: "Book Appointment", text: "…" },
+    { icon: "images", title: "1 slide of 5-picture carousel", text: "…" },
+    { icon: "globe", title: "URL — website, store and etc.", text: "…" },
+    { icon: "wallet", title: "Payment method", text: "…" },
+  ],
+}
+```
+
+- `product` must match a key in `pricing.products` (`card`, `premium`).
+- `icon` is any key from `icons.js` (`star`, `briefcase`, `calendar`, `images`,
+  `link`, `wallet`, `globe`, `user`, `megaphone`, `lock`, `credit-card`, …).
+- The heading above the block lives in `content.sections.inside`
+  (`eyebrow`, `title`, `sub`).
+
+#### The “choose 2 features” picker in the booking form
+
+Standard-card customers pick **2** of the featured features while booking.
+The options come from `inside.featured` above — one list, two places.
+
+```js
+booking: {
+  featurePick: {
+    enabled: true,
+    max: 2,                                  // how many they may pick
+    label: "Your 2 features",
+    note: "Your Standard card includes any 2 features. Pick yours below.",
+    premiumNote: "Premium includes every feature — nothing to pick.",
+    appliesTo: ["standard", "custom"],       // booking types that can pick
+  },
+}
+```
+
+- Premium bookings skip the picker and show `premiumNote` instead.
+- A third pick is refused with a short message.
+- The choice is saved with the booking, appears in the summary panel, in the
+  confirmation email and in the admin dashboard. It does **not** change the price.
+
 ### 5. Team, FAQ, bookings, analytics
 
 ```js

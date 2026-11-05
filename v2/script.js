@@ -329,6 +329,94 @@
         $$('.btype', box).forEach((c) => c.classList.toggle('is-active', c === card));
         applyBranding(currentOffer().branding);
         setStudioModel(currentOffer().productId);
+        renderFeaturePick();
+        calculateTotal();
+      });
+    });
+  }
+
+  // ── "choose your 2 features" ───────────────────────────────────────
+  // The options come from inside.featured in site.config.js, so the
+  // section and the booking form always show the same list.
+  function featurePickConfig() {
+    const b = CFG.booking || {};
+    const fp = b.featurePick || {};
+    if (!fp.enabled) return null;
+    const options = (CFG.inside && CFG.inside.featured) || [];
+    if (!options.length) return null;
+    return {
+      max: typeof fp.max === 'number' ? fp.max : 2,
+      label: fp.label || 'Your features',
+      note: fp.note || '',
+      premiumNote: fp.premiumNote || '',
+      appliesTo: fp.appliesTo || [],
+      options,
+    };
+  }
+
+  function featurePickApplies() {
+    const fp = featurePickConfig();
+    if (!fp) return false;
+    return fp.appliesTo.indexOf(booking.type) !== -1;
+  }
+
+  function selectedFeatures() {
+    return booking.features.slice();
+  }
+
+  function renderFeaturePick() {
+    const block = $('#featurePickBlock');
+    const list = $('#featurePickList');
+    if (!block || !list) return;
+    const fp = featurePickConfig();
+    if (!fp) { block.hidden = true; return; }
+
+    block.hidden = false;
+    const label = $('#featurePickLabel');
+    const hint = $('#featurePickHint');
+    const err = $('#featurePickError');
+    if (label) label.textContent = fp.label;
+    if (err) err.textContent = '';
+
+    if (!featurePickApplies()) {
+      // Premium (or any tier that includes everything) — nothing to pick.
+      booking.features = [];
+      if (hint) hint.textContent = fp.premiumNote;
+      list.hidden = true;
+      list.innerHTML = '';
+      return;
+    }
+
+    list.hidden = false;
+    if (hint) {
+      hint.textContent = fp.note + (booking.features.length
+        ? ' — ' + booking.features.length + ' of ' + fp.max + ' chosen.'
+        : ' — 0 of ' + fp.max + ' chosen.');
+    }
+    list.innerHTML = fp.options.map((o) => {
+      const on = booking.features.indexOf(o.title) !== -1;
+      return '<button type="button" class="chip' + (on ? ' is-on' : '') + '" data-feature="' + esc(o.title) + '"' +
+        ' aria-pressed="' + (on ? 'true' : 'false') + '">' +
+        '<span class="chip__icon">' + icon(o.icon || 'star', 14) + '</span>' +
+        '<span class="chip__label">' + esc(o.title) + '</span>' +
+        '</button>';
+    }).join('');
+
+    $$('.chip', list).forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const title = chip.dataset.feature;
+        const i = booking.features.indexOf(title);
+        if (i !== -1) {
+          booking.features.splice(i, 1);
+        } else {
+          if (booking.features.length >= fp.max) {
+            const e = $('#featurePickError');
+            if (e) e.textContent = 'Your Standard card includes ' + fp.max + ' features — remove one first.';
+            return;
+          }
+          booking.features.push(title);
+        }
+        renderFeaturePick();
         calculateTotal();
       });
     });
@@ -424,6 +512,68 @@
     if (confirm) confirm.classList.toggle('is-active', !!(filled && booking.slot));
   }
 
+  // ---- inside the card: what a tap opens, per tier ----
+  function renderInside() {
+    const cfg = CFG.inside;
+    if (!cfg) return;
+
+    const box = $('#insideCompare');
+    if (box) {
+      box.innerHTML = (cfg.columns || []).map((c) => {
+        const p = P[c.product];
+        return '<article class="inside-card' + (c.featured ? ' inside-card--featured' : '') + '"' +
+            (p ? ' data-inside-product="' + esc(p.id) + '"' : '') + '>'
+          + '<header class="inside-card__head">'
+          +   '<h3>' + esc(c.name) + '</h3>'
+          +   '<span class="inside-card__price">' + esc(tokens(c.priceLabel || '')) + '</span>'
+          +   '<p class="inside-card__note">' + esc(c.note || '') + '</p>'
+          + '</header>'
+          + '<ul class="inside-card__list">'
+          +   (c.items || []).map((i) =>
+                '<li' + (i.highlight ? ' class="is-highlight"' : '') + '>' +
+                '<span class="inside-card__tick">' + icon(i.highlight ? 'star' : 'check', 15) + '</span>' +
+                '<span class="inside-card__text"><strong>' + esc(i.title) + '</strong>' +
+                (i.text ? '<span>' + esc(i.text) + '</span>' : '') + '</span></li>').join('')
+          + '</ul>'
+          + (c.cta ? '<button type="button" class="btn btn--primary btn--block inside-card__cta" data-inside-pick="' +
+              esc(c.product || '') + '">' + esc(c.cta) + '</button>' : '')
+          + '</article>';
+      }).join('');
+    }
+
+    const fb = $('#insideFeatured');
+    if (fb) {
+      const list = cfg.featured || [];
+      const pick = (CFG.booking && CFG.booking.featurePick) || {};
+      const max = typeof pick.max === 'number' ? pick.max : 2;
+      fb.innerHTML =
+        '<div class="inside__featured-head">'
+        +   '<h3>' + esc(cfg.featuredTitle || '') + '</h3>'
+        +   '<p>' + esc(cfg.featuredSub || '') + '</p>'
+        + '</div>'
+        + '<div class="inside__featured-rules">'
+        +   '<div class="inside__rule"><span class="inside__rule-dot inside__rule-dot--std"></span>' +
+              '<span><b>Standard card</b>Choose any ' + max + ' features from this list</span></div>'
+        +   '<div class="inside__rule"><span class="inside__rule-dot inside__rule-dot--prm"></span>' +
+              '<span><b>Premium card</b>Every feature here is included</span></div>'
+        + '</div>'
+        + '<div class="inside__featured-grid">'
+        +   list.map((f) =>
+              '<div class="inside__tile">'
+              +   '<span class="inside__tile-icon">' + icon(f.icon || 'star', 20) + '</span>'
+              +   '<div class="inside__tile-body">'
+              +     '<strong>' + esc(f.title) + '</strong>'
+              +     '<span>' + esc(f.text || '') + '</span>'
+              +     '<span class="inside__pills">'
+              +       '<span class="inside__pill inside__pill--std">Standard · pick ' + max + '</span>'
+              +       '<span class="inside__pill inside__pill--prm">Premium · included</span>'
+              +     '</span>'
+              +   '</div>'
+              + '</div>').join('')
+        + '</div>';
+    }
+  }
+
   function renderAll() {
     const order = CFG.pricing.order;
 
@@ -436,6 +586,8 @@
 
     const choices = $('#choiceList');
     if (choices) choices.innerHTML = order.map((id, i) => choiceRow(P[id], i === 0)).join('');
+
+    renderInside();
 
     const faq = $('#faqList');
     if (faq) faq.innerHTML = CFG.faq.map(faqItem).join('');
@@ -506,6 +658,7 @@
 
     // ---- booking: types, slots, location notes ----
     renderBookingTypes();
+    renderFeaturePick();
     renderBookingDate();
     renderBookingSlots();
     const bk = CFG.booking || {};
@@ -654,6 +807,7 @@
     date: '',
     slot: '',
     promo: null,      // { code, label, type, value }
+    features: [],     // the features the customer picked (Standard card: 2)
   };
 
   function currentProduct() {
@@ -744,6 +898,7 @@
     if (t.discount) add('Bulk discount', '-' + money(t.discount));
     if (t.promo) add(t.promo.label || ('Promo ' + t.promo.code), '-' + money(t.promoAmount));
     t.addOns.forEach((a) => add(a.label, a.price ? money(a.price) : 'Included'));
+    if (t.features && t.features.length) add('Features', esc(t.features.join(', ')));
     if (t.shipping) add('Delivery — ' + (shippingLabel() || 'shipping'), money(t.shipping));
     if (t.cod) add('Cash-on-delivery fee', money(t.cod));
     if (t.balance) add('Due today (deposit)', money(t.deposit));
@@ -821,6 +976,7 @@
     const t = {
       p, offer, qty, subtotal, discount, promo, promoAmount: promoOff,
       addOns, addOnTotal, shipping, cod, total, deposit, balance,
+      features: selectedFeatures(),
     };
     renderSummaryRows(t);
     renderSummaryItems(t);
@@ -851,6 +1007,7 @@
       $$('.btype').forEach((c) => c.classList.toggle('is-active', c.dataset.type === t.id));
       applyBranding(t.branding || 'standard');
     }
+    renderFeaturePick();
     calculateTotal();
     const form = $('#preorder');
     if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -931,7 +1088,7 @@
 
   // Draws the printed artwork onto a card-aspect canvas, optionally overlaying
   // the customer's name in a blank region of the face.
-  function faceCanvas(img, name, model, allowName, customOptions) {
+  function faceCanvas(img, name, model, allowName) {
     const ar = (model.model3d.w / model.model3d.h) || 1.586;
     const W = 1040, H = Math.round(W / ar);
     const c = document.createElement('canvas');
@@ -945,21 +1102,6 @@
     const scale = Math.max(W / img.width, H / img.height);
     const dw = img.width * scale, dh = img.height * scale;
     g.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
-
-    // Premium logo option: preserve the standard TapAsul artwork and place
-    // the customer's uploaded logo in the centre of the card face.
-    const customerLogo = customOptions && customOptions.logo;
-    if (customerLogo && customerLogo.complete && customerLogo.naturalWidth) {
-      const maxW = W * 0.22, maxH = H * 0.30;
-      const logoScale = Math.min(maxW / customerLogo.naturalWidth, maxH / customerLogo.naturalHeight);
-      const logoW = customerLogo.naturalWidth * logoScale;
-      const logoH = customerLogo.naturalHeight * logoScale;
-      g.save();
-      g.shadowColor = 'rgba(0,0,0,.16)';
-      g.shadowBlur = W * 0.012;
-      g.drawImage(customerLogo, (W - logoW) / 2, (H - logoH) / 2, logoW, logoH);
-      g.restore();
-    }
 
     if (allowName && name && CFG.customizer.drawNameOverArtwork !== false) {
       const label = name.toUpperCase();
@@ -1253,33 +1395,24 @@
       shadow.scale.set(d.w * 2.1, d.d * 9 + 1.2, 1);
       shadow.position.set(0, -d.h / 2 - 0.28, 0.12);
 
-      // ---- Premium logo option: keep the standard printed artwork and
-      // place the customer's logo in the centre instead of replacing the
-      // whole card with a blank custom-colour design. ----
-      if (custom.branding === 'custom' && model.branding !== false && hasFaces(model)) {
-        const frontSrc = model.faces.front;
-        const backSrc = model.faces.back;
-        const one = (src, kind) => (src ? loadImage(src).then((img) => ({ img, kind })).catch(() => null) : Promise.resolve(null));
-        Promise.all([one(frontSrc, 'front'), one(backSrc, 'back')]).then((res) => {
-          if (token !== buildToken || !mesh) return;
-          const byKind = {};
-          res.forEach((r) => { if (r) byKind[r.kind] = r.img; });
-          if (byKind.front) {
-            const tex = new THREE.CanvasTexture(faceCanvas(byKind.front, name, model, true, custom));
-            tex.anisotropy = 4; tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true;
-            faceMat.map = tex; faceMat.color = new THREE.Color(0xffffff);
-            faceMat.roughness = fin.roughness; faceMat.metalness = 0; faceMat.needsUpdate = true;
-            textures.push(tex);
-          }
-          if (byKind.back) {
-            const tex = new THREE.CanvasTexture(faceCanvas(byKind.back, '', model, false, custom));
-            tex.anisotropy = 4; tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true;
-            backMat.map = tex; backMat.color = new THREE.Color(0xffffff);
-            backMat.roughness = fin.roughness; backMat.metalness = 0; backMat.needsUpdate = true;
-            textures.push(tex);
-          }
-          requestRender();
-        });
+      // ---- a card built from the customer's own branding ----
+      if (custom.branding === 'custom' && model.branding !== false) {
+        const mkTex = (isBack) => {
+          const cv = customFaceCanvas(model, custom, name, isBack);
+          const tex = new THREE.CanvasTexture(cv);
+          tex.anisotropy = 4;
+          tex.encoding = THREE.sRGBEncoding;
+          tex.needsUpdate = true;
+          textures.push(tex);
+          return tex;
+        };
+        faceMat.map = mkTex(false);
+        faceMat.color = new THREE.Color(0xffffff);
+        faceMat.needsUpdate = true;
+        backMat.map = mkTex(true);
+        backMat.color = new THREE.Color(0xffffff);
+        backMat.needsUpdate = true;
+        requestRender();
 
       // ---- swap in the real printed artwork when it is ready ----
       } else if (hasFaces(model)) {
@@ -1632,18 +1765,6 @@
     syncCustom();
   }
 
-
-  function initDesignConsultation() {
-    const link = $('#designConsultation');
-    if (!link) return;
-    link.addEventListener('click', () => {
-      const notes = $('#bookingNotes');
-      if (notes && !notes.value.trim()) {
-        notes.value = 'I would like to book a design consultation to discuss a custom Premium physical card design.';
-      }
-    });
-  }
-
   function init3D() {
     const nameEl = $('#customName');
     if (nameEl && !nameEl.value) nameEl.value = CFG.customizer.defaultName;
@@ -1789,6 +1910,7 @@
           booking.type = t.id;
           $$('.btype').forEach((c) => c.classList.toggle('is-active', c.dataset.type === t.id));
         }
+        renderFeaturePick();
         calculateTotal();
 
         rebuild();
@@ -2001,6 +2123,7 @@
         cod: t.cod,
         addOns: t.addOns,
         addOnTotal: t.addOnTotal,
+        features: t.features,
         branding: t.offer.branding,
         finish: design.finish,
         payment: pay ? pay.label : paymentMethodId(),
@@ -2093,6 +2216,7 @@
         finish: o.finish,
         addOns: o.addOns,
         addOnTotal: o.addOnTotal,
+        features: o.features || [],
         total: o.total,
         deposit: o.deposit,
         balance: o.balance,
@@ -2123,6 +2247,7 @@
             'Unit price: ' + money(o.unit),
             'Branding: ' + o.branding + (o.finish ? ' (' + o.finish + ')' : ''),
             o.addOns.length ? 'Add-ons: ' + o.addOns.map((a) => a.label + (a.price ? ' (' + money(a.price) + ')' : '')).join(', ') : '',
+            (o.features && o.features.length) ? 'Features on the card: ' + o.features.join(', ') : '',
             o.discount ? 'Discount: -' + money(o.discount) : '',
             'Delivery (' + o.zone + '): ' + money(o.shipping),
             o.cod ? 'Cash-on-delivery fee: ' + money(o.cod) : '',
@@ -2225,11 +2350,28 @@
     document.addEventListener('click', (e) => {
       const sel = e.target.closest('[data-select-product]');
       if (sel) { selectProduct(sel.dataset.selectProduct); }
+      // "Book the premium card" from the comparison section
+      const pick = e.target.closest('[data-inside-pick]');
+      if (pick) {
+        const productId = pick.dataset.insidePick;
+        const t = typeForProduct(productId);
+        if (t) {
+          booking.type = t.id;
+          $$('.btype').forEach((c) => c.classList.toggle('is-active', c.dataset.type === t.id));
+          applyBranding(t.branding || 'standard');
+        }
+        setStudioModel(productId);
+        renderFeaturePick();
+        calculateTotal();
+        const form = $('#preorder');
+        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
     document.addEventListener('change', (e) => {
       if (e.target.name === 'bookingType') {
         booking.type = e.target.value;
         applyBranding(currentOffer().branding);
+        renderFeaturePick();
         calculateTotal();
       }
     });
@@ -2252,7 +2394,6 @@
     if (wanted && P[wanted]) currentModel = wanted;
 
     setQty(1);
-    initDesignConsultation();
     init3D();
 
     // smooth anchor scrolling that clears the sticky header
